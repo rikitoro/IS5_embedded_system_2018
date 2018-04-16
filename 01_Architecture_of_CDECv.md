@@ -36,6 +36,62 @@ CDECvのプログラム(機械語命令)やデータはメモリに格納され�
 ![メモリ空間](./assets/memory.png)
 
 
-
-
 ## 標準命令セット
+CDECvでは機械語の命令セットを利用者が自由に決定することができます。
+ただし、ここではコンピュータアーキテクチャ設計の学習を容易にするため、以下に示す各種命令を標準命令セットとして定めました。
+学習者はこれらの標準命令を参考にして、命令を変更したり、独自に定めた新たな命令を追加したりすることができます。
+
+標準命令のニーモニック、命令コード、フラグ変化、動作記述、意味を下記表に示します。
+
+| ニーモニック    | 命令コード     | フラグ変化 | 動作記述           | 意味 |
+|----------------|---------------|:----:|------------------------|------|
+|`MOV sreg, dreg`|`000xssdd`     |  --  | dreg <- sreg           | move register to register |
+|`LD  adrs, dreg`|`100xxxdd adrs`|  --  | dreg <- MEM[adrs]      | load memory to register |
+|`ST  sreg, adrs`|`101xssxx adrs`|  --  | MEM[adrs] <- sreg      | store register to memory |
+|`ADD reg       `|`001000rr`     |  @   | A <- A + reg           | add |
+|`ADC reg       `|`001001rr`     |  @   | A <- A + reg + Cy      | add with carry |
+|`SUB reg       `|`001010rr`     |  @   | A <- A - reg           | subtract |
+|`SBB reg       `|`001011rr`     |  @   | A <- A - reg - Cy      | subtract with borrow |
+|`AND reg       `|`001100rr`     |  @   | A <- A & reg           | logical and (bitwise) |
+|`OR  reg       `|`001101rr`     |  @   | A <- A \| reg          | logical or (bitwise) |
+|`EOR reg       `|`001111rr`     |  @   | A <- A ^ reg           | logical exclusive or (bitwise) |
+|`INC reg       `|`010000rr`     |  @   | reg <- reg + 1         | incriment |
+|`DEC reg       `|`010001rr`     |  @   | reg <- reg - 1         | decrement |
+|`NOT reg       `|`010100rr`     |  @   | reg <- ~reg            | logical not (bitwise) |
+|`JMP adrs      `|`110xxx00 adrs`|  --  | PC <- adrs             | jump |
+|`JS adrs       `|`111100xx adrs`|  --  | if (S == 1) PC <- adrs else PC <- PC + 2 | jump if S == 1 |
+|`JZ adrs       `|`111010xx adrs`|  --  | if (Z == 1) PC <- adrs else PC <- PC + 2 | jump if Z == 1 |
+|`JC adrs       `|`111001xx adrs`|  --  | if (Cy == 1) PC <- adrs else PC <- PC + 2 | jump if Cy == 1 |
+
+[注1]　命令コード中の`x`は将来の拡張のため0とします。
+[注2] フラグ変化の@は演算結果によりすべてのフラグが影響を受けることを示しています。
+
+
+命令コード中の`ss`, `dd`, `rr`は、ニーモニックで指定される汎用レジスタ`sreg`, `dreg`, `reg`を示す2ビットの符号で、下記の表により定義されます。
+
+| reg/sreg/dreg | rr/ss/dd |
+|:-------------:|:--------:|
+| A             |`01`      |
+| B             |`10`      |
+| C             |`11`      |
+
+
+標準命令の大まかな分類は次のようになります。
+
+1. データ転送命令
+ - レジスタ間データ転送(MOV)
+ - メモリからレジスタへのロード(LD)
+ - レジスタからメモリへのストア(ST)
+2. 算術論理演算命令
+ - 算術演算
+  * 1オペランド命令(INC, DEC):指定されたレジスタのインクリメントやデクリメントを行います
+  * 2オペランド命令(ADD, ADC, SUB, SBB):Aレジスタをアキュムレータとして固定し、指定されたレジスタとの加減算を行います
+ - 論理演算
+  * 1オペランド命令(NOT):指定されたレジスタの論理否定を行います
+  * 2オペランド命令(AND, OR, EOR):Aレジスタをアキュムレータとして固定し、指定されたレジスタとの論理演算を行います
+3. 分岐命令
+ - 無条件分岐(JMP)
+ - 条件付き分岐(JS, JZ, JC):フラグの値により分岐先を変更します
+
+なお、メモリ空間のアドレスを指定するロード(LD)、ストア(ST)命令、および分岐命令(JMP, JS, JZ, JC)の命令コードは、1バイトのオペコードと8ビット(1バイト)のアドレス指定(adrs)から構成される2バイト命令となります。
+他の標準命令は1バイト命令です。
