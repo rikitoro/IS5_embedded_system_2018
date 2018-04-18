@@ -14,7 +14,9 @@ CDECv (Yet another CDEC, CDEC Voyager) はコンピュータアーキテクチ�
 CDECvのオリジナルは、木村真也氏(群馬工業高等専門学校教授)と鹿股昭雄氏(元　仙台高等専門学校教授)により開発されたコンピュータボードCDEC(Computer Design Education Computer)です。
 CDECvはCDECをFPGAの評価ボード(DE0-CV)上で実装できるように修正したものですが、そのアーキテクチャや構造はオリジナルのCDECのものを引き継いでいます。
 
-![CDEC](./assets/cdec.jpg "CDECボード")
+![CDECとCDECv](./assets/cdec.jpg "CDECとCDECv")
+
+<図0.1 CDEC(左)とCDECv(右)>
 
 CDECvは以下に示す特徴を持った、コンピュータアーキテクチャ教育用のコンピュータボードです。
 - 非常にシンプルなアーキテクチャである(5個のレジスタセットと256バイトのメモリ)
