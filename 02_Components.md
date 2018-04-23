@@ -279,7 +279,7 @@ endmodule
 |  0010 |    ~a (bitwise not) |
 |  0011 |    ~b (bitwise not) |
 |  0100 | a & b (bitwise and) |
-|  0101 | a | b (bitwise or)  |
+|  0101 | a \| b (bitwise or)  |
 |  0110 | a ^ b (bitwise exclusive or) |
 |  0111 | 8'b0000_0000 |
 |  1000 | a + 1 |
