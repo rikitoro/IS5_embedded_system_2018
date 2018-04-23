@@ -51,12 +51,12 @@ endmodule
 
 メモリはアドレス付けされたデータ
 
-![メモリ](./assets/memory.png "メモリ")
+![メモリ](./assets/ram.png "メモリ")
 
 <図2.3 メモリ>
 
 
-![メモリの動作例](./assets/timechart_memory.png "メモリの動作例")
+![メモリの動作例](./assets/timechart_ram.png "メモリの動作例")
 
 <図2.4 メモリの動作例>
 
