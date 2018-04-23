@@ -252,6 +252,8 @@ endmodule
 ## ALU (Arithmetic Logic Unit)
 
 
+
+
 ![CDECvで使用するALU](./assets/alu.png "CDECvで使用するALU")
 
 <図2.7 CDECvで使用するALU>
@@ -266,8 +268,8 @@ endmodule
 | b[7:0] | 入力 | 8ビットの入力データ |
 | Cy_in  | 入力 | 1ビットの入力データ(carry) |
 | aluop[3:0]  | 入力 | ALUで行う演算を選択する選択信号(表2.4を参照) |
-| result[7:0] | 出力 | |
-| SZCy[2:0]   | 出力 | |
+| result[7:0] | 出力 | a,bに対する演算結果(8ビット) |
+| SZCy[2:0]   | 出力 | 演算結果に依存したフラグ信号 |
 
 
 <表2.4 ALUの機能表>
@@ -290,8 +292,6 @@ endmodule
 |  1101 | a - b - Cy_in (subtract with borrow) |
 |  1110 | a << 1 (shift left) |
 |  1111 | a >> 1 (logical shift right) |
-
-
 
 
 <リスト2.5 ALUの Verilog HDL 記述例>
