@@ -16,11 +16,17 @@ CDECvでは、レジスタセットの汎用レジスタ、プログラムカウ
 保持された8ビットのデータは出力端子qより出力されます。
 
 書き込み許可weが0となっている場合はデータの取り込みは行われません。
-クロック信号clockの立ち上がりが入ったとしても、保持されたデータは変化しません。(qの値は変化しません)
+この場合(we=0)は、クロック信号clockの立ち上がりが入ったとしても、保持されたデータは変化しません。(qの値は変化しません)
 
-リスト2.1に書き込み許可付き8ビットレジスタのHDL記述例、図2.2に動作例を示します。
+このレジスタの動作例を図2.2に示します。
 
-<リスト2.1 書き込み許可付き8ビットレジスタ>
+<リスト2.1 書き込み許可付き8ビットレジスタの Verilog HDL 記述例>
+
+![書き込み許可付き8ビットレジスタの動作例](./assets/timechart_register.png "書き込み許可付き8ビットレジスタの動作例")
+
+Verilog HDLで書き込み許可付き8ビットレジスタを設計した記述例をリスト2.1に示します。
+
+<図2.2 書き込み許可付き8ビットレジスタの動作例>
 
 ````Verilog
 module register ( // positive edge clock
@@ -40,6 +46,37 @@ module register ( // positive edge clock
 endmodule
 ````
 
-![書き込み許可付き8ビットレジスタの動作例](./assets/timechart_register.png "書き込み許可付き8ビットレジスタの動作例")
 
-<図2.2 書き込み許可付き8ビットレジスタの動作例>
+## メモリ
+
+メモリはアドレス付けされたデータ
+
+![メモリ](./assets/memory.png "メモリ")
+
+<図2.3 メモリ>
+
+
+![メモリの動作例](./assets/timechart_memory.png "メモリの動作例")
+
+<図2.4 メモリの動作例>
+
+
+<リスト2.2 メモリのHDL記述例>
+
+````Verilog
+module memory ( // positive edge clock
+  input wire        clock,
+  input wire        we, // write enable
+  input wire [7:0]  MA, // address      (Memory Adress)
+  input wire [7:0]  WD, // input data   (Write Data)
+  output reg [7:0]  RD  // output data  (Read Data)
+  );
+
+  reg [7:0] RAM [255:0];
+
+  always_ff @(posedge clock) begin
+    if (we) RAM[MA] <= WD;
+    RD <= RAM[MA];
+  end
+endmodule
+````
