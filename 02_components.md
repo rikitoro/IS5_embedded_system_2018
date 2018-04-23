@@ -1,9 +1,9 @@
 # CDECvを構成する様々な回路要素
 
 ## レジスタ
-レジスタは順序回路を構成するもっとも基本的な回路です。
-CDECvでは、レジスタセットの汎用レジスタ、プログラムカウンタ、フラグレジスタや、他の補助的なレジスタそれからIOポートなどに用いられています。
-他にも、制御信号を生成するための状態機械を実装するためにも用いられます。
+レジスタは順序回路を構成するもっとも基本的な記憶回路です。
+CDECvでは、レジスタセットの汎用レジスタ、プログラムカウンタ、フラグレジスタや、他の補助的なレジスタ、それからIOポートなどに用いられています。
+また、制御信号を生成するための状態機械を実装するためにも用いられます。
 
 ここでは、図2.1に示す書き込み許可付き8ビットレジスタの構成と動作を説明します。
 
@@ -64,7 +64,7 @@ weは書き込み許可信号で、weが1の時にメモリへのデータの書
 
 それでは、図2.4のメモリの動作例をもとに、メモリの動作を説明していきます。
 ここで、アドレスaddrで指定されるワードに保持されているデータをRAM[addr]で表記することにします。
-例えば0xA0番地に保持されているデータはRAM[0xA0]と表されます。
+例えば0xA0番地に保持されているデータはRAM[0xA0]と表します。
 図2.4では、0xA0, 0xA1, 0xA2番地へのデータアクセスの動作例が示されています。
 なお初期状態においては、RAM[0xA0]=0x11, RAM[0xA1]=0x22, RAM[0xA2]=0x33であるとしています。
 
@@ -74,10 +74,10 @@ weは書き込み許可信号で、weが1の時にメモリへのデータの書
 2番目のclockの立ち上がりのタイミングでは、MAに0xA1が指定されていますので、RAM[0xA1]の値0x22がRDに読みだされています。
 
 3番目のclockの立ち上がりのタイミングでは、MAは変わらず0xA1が指定されていますが、weが1と書き込み許可となっていますので、このタイミングでWDの値0x12がRAM[0xA1]に書き込まれます。
-なお、RDにはRAM[0xA1]が更新される前の値が出力されています。
+なお、RDにはRAM[0xA1]が更新される前の値0x22が出力されます。
 
-3番目のclockの立ち上がりのタイミングでは、MAに0xA2が指定されていますので、RAM[0xA2]からの読出しと、RAM[0xA2]への書き込みが行われます。
-
+4番目のclockの立ち上がりのタイミングでは、MAに0xA2が指定されていますので、RAM[0xA2]へのアクセスが行われます。
+weが1ですので、RAM[0xA2]の読出しに加え、RAM[0xA2]への書き込みの両方が行われます。
 
 
 ![メモリ](./assets/ram.png "メモリ")
@@ -91,6 +91,7 @@ weは書き込み許可信号で、weが1の時にメモリへのデータの書
 
 
 リスト2.2にメモリのVerilog HDLの記述例を示します。
+
 
 <リスト2.2 メモリの Verilog HDL 記述例>
 
@@ -110,4 +111,139 @@ module memory ( // positive edge clock
     RD <= RAM[MA];
   end
 endmodule
+````
+
+## マルチプレクサ
+
+
+````Verilog
+module mux8 # (parameter WIDTH = 8) (
+  input wire  [2:0]       sel,
+  input wire  [WIDTH-1:0] d0,
+  input wire  [WIDTH-1:0] d1,
+  input wire  [WIDTH-1:0] d2,
+  input wire  [WIDTH-1:0] d3,
+  input wire  [WIDTH-1:0] d4,
+  input wire  [WIDTH-1:0] d5,
+  input wire  [WIDTH-1:0] d6,
+  input wire  [WIDTH-1:0] d7,
+  output reg  [WIDTH-1:0] y  
+  );
+
+  always @ (*) begin
+    case (sel)
+      3'b000: y = d0;
+      3'b001: y = d1;
+      3'b010: y = d2;
+      3'b011: y = d3;
+      3'b100: y = d4;
+      3'b101: y = d5;
+      3'b110: y = d6;
+      3'b111: y = d7;
+    endcase
+  end
+endmodule
+
+````
+
+## デコーダ
+
+````Verilog
+module line_decoder ( // 3-line to 8-line decoder
+  input wire  [2:0]       num,
+  output wire             y0
+  output wire             y1
+  output wire             y2
+  output wire             y3
+  output wire             y4
+  output wire             y5
+  output wire             y6
+  output wire             y7
+  );
+
+  reg [7:0] ys;
+
+  assign {y7, y6, y5, y4, y3, y2, y1, y0} = ys;
+
+  always @ (*) begin
+    case (num)
+      3'b000: ys = 8'b0000_0001;
+      3'b001: ys = 8'b0000_0010;
+      3'b010: ys = 8'b0000_0100;
+      3'b011: ys = 8'b0000_1000;
+      3'b100: ys = 8'b0001_0000;
+      3'b101: ys = 8'b0010_0000;
+      3'b110: ys = 8'b0100_0000;
+      3'b111: ys = 8'b1000_0000;
+    endcase
+  end
+endmodule
+````
+
+
+## ALU (Arithmetic Logic Unit)
+
+
+````Verilog
+//  Function of alu
+//
+//  aluop | operation
+// -------+-------------------
+//   0000 | a
+//   0001 | b
+//   0010 | ~a
+//   0011 | ~b
+//   0100 | a & b
+//   0101 | a | b
+//   0110 | a ^ b
+//   0111 | 8'b0000_0000
+//   1000 | a + 1
+//   1001 | a - 1
+//   1010 | a + b
+//   1011 | a - b
+//   1100 | a + b + Cy_in
+//   1101 | a - b - Cy_in
+//   1110 | a << 1 (shift left)
+//   1111 | a >> 1 (shift right)
+
+module alu(
+  input wire  [3:0] aluop,
+  input wire  [7:0] a,
+  input wire  [7:0] b,
+  input wire        Cy_in,
+  output wire [7:0] result,
+  output wire [2:0] SZCy
+  );
+
+  reg [8:0] result1;
+  wire S, Z, Cy;
+
+  assign result = result1[7:0];
+  assign S      = result1[7];
+  assign Z      = (result1[7:0] == 8'h00) ? 1'b1 : 1'b0;
+  assign Cy     = result1[8];
+  assign SZCy   = {S, Z, Cy};
+
+  always @ (*) begin
+    casex (aluop)
+      4'b0000: result1 = a;
+      4'b0001: result1 = b;
+      4'b0010: result1 = ~a;
+      4'b0011: result1 = ~b;
+      4'b0100: result1 = a & b;
+      4'b0101: result1 = a | b;
+      4'b0110: result1 = a ^ b;
+      4'b0111: result1 = 8'b0000_0000;
+      4'b1000: result1 = a + 1'b1;
+      4'b1001: result1 = a - 1'b1;
+      4'b1010: result1 = a + b;
+      4'b1011: result1 = a - b;
+      4'b1100: result1 = a + b + Cy_in;
+      4'b1101: result1 = a - b - Cy_in;
+      4'b1110: result1 = {a, 1'b0};
+      4'b1111: result1 = {2'b00, a[7:1]};  
+    endcase
+  end
+endmodule
+
 ````
