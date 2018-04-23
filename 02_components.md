@@ -252,28 +252,33 @@ endmodule
 ## ALU (Arithmetic Logic Unit)
 
 
-````Verilog
-//  Function of alu
-//
-//  aluop | operation
-// -------+-------------------
-//   0000 | a
-//   0001 | b
-//   0010 | ~a
-//   0011 | ~b
-//   0100 | a & b
-//   0101 | a | b
-//   0110 | a ^ b
-//   0111 | 8'b0000_0000
-//   1000 | a + 1
-//   1001 | a - 1
-//   1010 | a + b
-//   1011 | a - b
-//   1100 | a + b + Cy_in
-//   1101 | a - b - Cy_in
-//   1110 | a << 1 (shift left)
-//   1111 | a >> 1 (shift right)
+<表2.3 CDECvのALUの機能表>
 
+| aluop | 機能 |
+|-------|------|
+|  0000 |    a |
+|  0001 |    b |
+|  0010 |    ~a (bitwise not) |
+|  0011 |    ~b (bitwise not) |
+|  0100 | a & b (bitwise and) |
+|  0101 | a | b (bitwise or)  |
+|  0110 | a ^ b (bitwise exclusive or) |
+|  0111 | 8'b0000_0000 |
+|  1000 | a + 1 |
+|  1001 | a - 1 |
+|  1010 | a + b |
+|  1011 | a - b |
+|  1100 | a + b + Cy_in (add with carry) |
+|  1101 | a - b - Cy_in (subtract with borrow) |
+|  1110 | a << 1 (shift left) |
+|  1111 | a >> 1 (logical shift right) |
+
+
+
+
+<リスト2.5 ALUの Verilog HDL 記述例>
+
+````Verilog
 module alu(
   input wire  [3:0] aluop,
   input wire  [7:0] a,
