@@ -343,9 +343,9 @@ module alu(
 
   assign result = result1[7:0];
   assign S      = result1[7];
-  assign Z      = (result1[7:0] == 8'h00) ? 1'b1 : 1'b0;
+  assign Zero   = (result1[7:0] == 8'h00) ? 1'b1 : 1'b0;
   assign Cy     = result1[8];
-  assign SZCy   = {S, Z, Cy};
+  assign SZCy   = {S, Zero, Cy};
 
   always @ (*) begin
     casex (aluop)
