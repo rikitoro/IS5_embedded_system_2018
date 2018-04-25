@@ -4,3 +4,9 @@
 ![CDECvデータパス部の構成](./assets/datapath_sketch.png "CDECvデータパス部の構成")
 
 <図4.1 CDECvデータパス部の構成>
+
+
+![転送元レジスタの選択回路](./assets/xsrc.png "転送元レジスタの選択回路")
+
+
+![転送先レジスタの選択回路](./assets/xdst.png "転送先レジスタの選択回路")
