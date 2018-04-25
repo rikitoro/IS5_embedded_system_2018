@@ -6,7 +6,7 @@ CDECvも図3.1に示すように、データパス部と制御部から構成さ
 また、データパス部からは機械語命令のコード(I)やフラグ信号(SZCy)が送られています。
 クロック信号clockとリセット信号resetは、データパス部と制御部の両方に共通して供給されます。
 
-![CDECvの全体的な構成](./assets/CDECv_microarchitecture_scketch.png "CDECvの全体的な構成")
+![CDECvの全体的な構成](./assets/ CDECv_microarchitecture_sketch.png "CDECvの全体的な構成")
 
 <図3.1 CDECvの全体的な構成(データパス部と制御部)>
 
