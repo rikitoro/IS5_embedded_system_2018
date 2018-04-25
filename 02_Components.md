@@ -110,7 +110,7 @@ module memory ( // positive edge clock
 
   reg [7:0] RAM [255:0];
 
-  always_ff @(posedge clock) begin
+  always @(posedge clock) begin
     if (we) RAM[MA] <= WD;
     RD <= RAM[MA];
   end
