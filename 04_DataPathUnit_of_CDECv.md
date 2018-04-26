@@ -16,3 +16,6 @@
 
 
 ![ALU制御回路](./assets/aluop.png "ALU制御回路")
+
+
+![制御部への信号](./assets/I_SZCy.png "制御部への信号")
