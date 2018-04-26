@@ -10,3 +10,9 @@
 
 
 ![転送先レジスタの選択回路](./assets/xdst.png "転送先レジスタの選択回路")
+
+
+![メモリアクセス回路](./assets/MEMwe.png "メモリアクセス回路")
+
+
+![ALU制御回路](./assets/aluop.png "ALU制御回路")
