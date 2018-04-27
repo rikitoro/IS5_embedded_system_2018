@@ -140,7 +140,7 @@ MARとWDRの値が確定した段階で、メモリの書き込み許可MEMweを
 この間にclockの立ち上がりが入ると、WDRのデータがメモリの0xA1番地へ書き込まれます。
 
 
-![メモリの書き込みシーケンス](./assets/timechart_memory_read.png "メモリの書き込みシーケンス")
+![メモリの書き込みシーケンス](./assets/timechart_memory_write.png "メモリの書き込みシーケンス")
 
 <図4.7 メモリの書き込みシーケンス>
 
