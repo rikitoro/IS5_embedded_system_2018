@@ -1,0 +1,66 @@
+# 実習課題
+
+## 実習1. アセンブラ作成
+
+CDECvのプログラムを機械語へ翻訳するアセンブラを作成しましょう。アセンブラが満たしているべき必須条件と、満たすことが望まれる推奨条件を示します。
+  - 必須条件:
+    - CDECvの標準命令セットとHALT命令に対応していること
+    - 疑似命令 ORG, DB, ENDに対応していること
+    - ラベルが利用できること
+  - 推奨条件:
+    - コメントに対応していること(コメントを無視できること)
+    - 新たな追加命令に対応できる拡張性を備えていること
+    - 機械語命令のコード列をインテルHEX形式に変換して出力できること
+
+## 実習2. CDECvの内部動作の観察
+CDECvをFPGAボード DE0-CV 上に実装した CDECv on DE0-CV を用いて、CDECvでプログラムを実行する際の内部状態をクロック単位で観察しましょう。
+
+1. リンク先 [CDECsv_with_monitor](https://github.com/rikitoro/CDECsv_with_monitor) より CDECv on DE0-CV のデザインファイルを取得し、CDECv on DE0-CV を実装しましょう。
+
+2. 以下のプログラムをアセンブルして、CDECvのメモリに転送します。
+
+````
+        ORG 0x00
+START:  LD DATA, A
+LOOP:   DEC A
+        MOV A, B
+        ADD B
+        JMP LOOP
+DATA    DB 0x30
+        END
+````
+
+3. CDECv on DE0-CV でリセット信号を供給したのち、マニュアルクロックを0.5クロックずつ供給します。
+その都度、CDECvの各種レジスタや制御信号をデバッグモニタ機能で観察し、それらの値を表A.1のように記録してください。
+2回目の`DEC A`命令を実行するあたりまで観測を続けます。
+
+<表A.1 CDECv 内の各状態の変化>
+
+|clock|F0|PC|A|B|C|MAR|WDR|RD|I|T|R|Xbus|xsrc|xdst|aluop|Rwe|FLGwe|MEMwe|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|1|0|0x00|0x00|0x00|0x00|0x00|0x00|0x00|0x00|0x00|0x00|0x00|000|000|0000|0|0|0|
+|0|1||||||||||||||||||
+|1|1||||||||||||||||||
+
+
+## 3. CDECv 追加命令の設計と実装 1
+
+表A.2に示す11種類の追加命令(追加命令1)のうち、いくつか(2つ以上)を選び、CDECvの標準命令に追加しましょう。
+
+標準命令と追加した命令を CDECv on DE0-CV に実装し、追加命令の動作をテストするプログラムを実行させ、実習2と同様に0.5クロック単位で動作の確認を行いましょう。
+
+<表A.2 CDECvの追加命令1>
+
+| ニーモニック   | 命令コード    | フラグ変化 | 動作記述         |
+|----------------|---------------|:----:|------------------------|
+|`MVI imm, dreg` |`110xxxdd imm` |  --  | dreg <- imm            |
+|`LDX sreg, dreg`|`1001ssdd`     |  --  | dreg <- MEM[sreg]      |
+|`STX sreg, dreg`|`1011ssdd`     |  --  | MEM[dreg] <- sreg      |
+|`CMP reg`       |`001110rr`     |  @   | Areg - reg             |
+|`SHR reg`       |`010010rr`     |  @   | reg <- reg >> 1        |
+|`SHL reg`       |`010011rr`     |  @   | reg <- reg >> 1        |
+|`JNS adrs`      |`111011xx adrs`|  --  | if (S == 0) PC <- adrs else PC <- PC + 2 |
+|`JNZ adrs`      |`111101xx adrs`|  --  | if (Z == 0) PC <- adrs else PC <- PC + 2 |
+|`JNC adrs`      |`111110xx adrs`|  --  | if (Cy == 0) PC <- adrs else PC <- PC + 2 |
+|`CAL adrs`      |`01100000 adrs`|  --  | C <- PC + 2, PC <- adrs|
+|`RET`           |`000x1100`     |  --  | PC <- C                |
