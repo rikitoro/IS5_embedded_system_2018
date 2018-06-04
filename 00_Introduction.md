@@ -28,10 +28,10 @@ CDECvは以下に示す特徴を持った、コンピュータアーキテクチ
 - 制御部の論理回路を改造することで新たな命令を追加することができる
 
 CDECvはterasic社のFPGA評価ボードDE0 CVに搭載されたFPGA(Cyclone V)上に実装することができます。
-DE0 CVボードのスイッチやボタン、LEDなどの入出力デバイスによって、CDECvの1クロック毎でのプログラムの実行を行うことができるようになっています。
+DE0 CVボードのスイッチやボタン、LEDなどの入出力デバイスによって、0.5クロック単位でのプログラムのステップ実行を行い、CPU内部の状態の変化を観察できるようになっています。
 
-また、CDECvはVerilog HDLによって設計されています。
-したがって、Verilog HDLの記述を変更することによってCDECvの動作を変更することができます。
+また、CDECvはVerilog HDL(System Verilog)によって設計されています。
+したがって、HDLの記述を変更することによってCDECvの動作を変更することができます。
 変更した回路情報をDE0 CVボードに書き込むことで、変更した新たな動作を確認できます。
 
 ## 参考資料
@@ -40,4 +40,4 @@ DE0 CVボードのスイッチやボタン、LEDなどの入出力デバイス�
 - Sarah L. Harris (著), David Money Harris (著), 天野 英晴 他(翻訳), ["ディジタル回路設計とコンピュータアーキテクチャ 第2版"](https://www.amazon.co.jp/dp/4798147524/), 翔泳社, 2017
 - デイビッド・M・ハリス (著), サラ・L・ハリス (著), 天野 英晴 他(翻訳), ["ディジタル回路設計とコンピュータアーキテクチャ[ARM版]"](https://www.amazon.co.jp/dp/4434218484/), 星雲社, 2016
 - ジョン・L. ヘネシー (著), デイビッド・A. パターソン (著), 成田 光彰 (翻訳), ["コンピュータの構成と設計 第5版 上/下"](https://www.amazon.co.jp/dp/4822298426), 日経BP社, 2014
-- DE0-CV Board, Terasic inc. , URL: [http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921](http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921) (2018/06/04 時点)
+- "DE0-CV Board", Terasic inc. , URL: [http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921](http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921) (2018/06/04 時点)
