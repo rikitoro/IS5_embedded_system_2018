@@ -172,7 +172,7 @@ LD3ではアドレス adrs に格納されたメモリのデータを読みだ�
 |ステップ| Xbus | Memory | ALU |
 |---|---|---|---|
 | ST0 | PC -> MAR   |                 | PC + 1 -> R |
-| ST1 | R -> reg    | MEM[MAR] -> RD  | |
+| ST1 | R -> PC     | MEM[MAR] -> RD  | |
 | ST2 | RD -> MAR   |                 | |
 | ST3 | sreg -> WDR |                 | |
 | ST4 |             | WDR -> MEM[MAR] | |
