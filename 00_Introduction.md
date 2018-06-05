@@ -41,3 +41,4 @@ DE0 CVボードのスイッチやボタン、LEDなどの入出力デバイス�
 - デイビッド・M・ハリス (著), サラ・L・ハリス (著), 天野 英晴 他(翻訳), ["ディジタル回路設計とコンピュータアーキテクチャ[ARM版]"](https://www.amazon.co.jp/dp/4434218484/), 星雲社, 2016
 - ジョン・L. ヘネシー (著), デイビッド・A. パターソン (著), 成田 光彰 (翻訳), ["コンピュータの構成と設計 第5版 上/下"](https://www.amazon.co.jp/dp/4822298426), 日経BP社, 2014
 - "DE0-CV Board", Terasic inc. , URL: [http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921](http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=921) (2018/06/04 時点)
+- 実習用CDECv設計ファイルリポジトリ CDEVsv_with_monitor, [https://github.com/rikitoro/CDECsv_with_monitor](https://github.com/rikitoro/CDECsv_with_monitor) (2018/06/04 時点)
