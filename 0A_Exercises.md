@@ -26,7 +26,7 @@ LOOP:   DEC A
         MOV A, B
         ADD B
         JMP LOOP
-DATA    DB 0x30
+DATA:   DB 0x30
         END
 ````
 
