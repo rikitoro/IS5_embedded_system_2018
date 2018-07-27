@@ -76,6 +76,9 @@ F1 -> F2 を実現するものです。
 
 さて、表6.2では次状態関数回路の真理値表のうち、MOV命令の状態遷移を実現する部分が示されています。
 他の命令に対しても同様に状態遷移を実現する真理値表を検討し組み合わせることで、次状態関数回路の完全な真理値表が作成できます。
+完全な真理値表とその実装は下記リンク先のソースコードを参照してください。
+
+https://github.com/rikitoro/CDECsv_with_monitor/blob/master/hardware/CDECv/control_unit/next_state_function.sv
 
 ### 命令デコーダ回路の設計
 
@@ -112,3 +115,6 @@ MV0に相当するのが9段あるのは、MOV命令 `MOV sreg, dreg` におい�
 xsrc[2:0]としてAレジスタを示す `001`、xdst[2:0]としてBレジスタを示す `010` が指定されており、確かに、Xbusを介して A レジスタから B レジスタにデータが転送されることがわかります。
 
 以上ではMOV命令のみを見てきましたが、他の命令についても同様に命令デコーダの入出力の関係を検討し真理値表を組み合わせることで、完全な命令デコーダの真理値表が作成できます。
+完全な真理値表とその実装は下記リンク先のソースコードを参照してください。
+
+https://github.com/rikitoro/CDECsv_with_monitor/blob/master/hardware/CDECv/control_unit/instruction_decoder.sv
