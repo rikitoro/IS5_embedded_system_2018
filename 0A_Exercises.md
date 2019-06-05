@@ -58,7 +58,7 @@ DATA:   DB 0x30
 |`STX sreg, dreg`|`1011ssdd`     |  --  | MEM[dreg] <- sreg      |
 |`CMP reg`       |`001110rr`     |  @   | Areg - reg             |
 |`SHR reg`       |`010010rr`     |  @   | reg <- reg >> 1        |
-|`SHL reg`       |`010011rr`     |  @   | reg <- reg >> 1        |
+|`SHL reg`       |`010011rr`     |  @   | reg <- reg << 1        |
 |`JNS adrs`      |`111011xx adrs`|  --  | if (S == 0) PC <- adrs else PC <- PC + 2 |
 |`JNZ adrs`      |`111101xx adrs`|  --  | if (Z == 0) PC <- adrs else PC <- PC + 2 |
 |`JNC adrs`      |`111110xx adrs`|  --  | if (Cy == 0) PC <- adrs else PC <- PC + 2 |
